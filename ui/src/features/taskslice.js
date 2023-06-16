@@ -41,6 +41,9 @@ export const taskSlice = createSlice({
     clearActive: (state) => {
       state.activeTask = null
     },
+    udpateOrder: (state, action) => {
+      state.items = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -103,6 +106,6 @@ export const taskSlice = createSlice({
   },
 })
 
-export const { setActive, clearActive } = taskSlice.actions
+export const { setActive, updateOrder, clearActive } = taskSlice.actions
 
 export default taskSlice.reducer
