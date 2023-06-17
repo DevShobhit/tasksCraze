@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, Tag, Space } from 'antd'
+import { Card, Row, Col, Space } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import View from './view'
 import Update from './update'
@@ -16,28 +16,36 @@ const Task = ({ item }) => {
 
   return (
     <>
-      <Card>
-        <Space align='center'>
-          {mode === 'view' ? (
-            <View item={item} />
-          ) : (
-            <Update item={item} toggleMode={toggleMode} />
-          )}
-          {mode === 'view' ? (
-            <>
-              <EditOutlined
-                style={{ cursor: 'pointer' }}
-                onClick={toggleMode}
-              />
-              <DeleteOutlined
-                style={{ cursor: 'pointer', color: 'red' }}
-                onClick={() => dispatch(deleteTask(item._id))}
-              />
-            </>
-          ) : (
-            ''
-          )}
-        </Space>
+      <Card
+        style={{
+          marginBottom: '10px',
+        }}
+      >
+        <Row align='center' justify={'space-between'}>
+          <Col>
+            {mode === 'view' ? (
+              <View item={item} />
+            ) : (
+              <Update item={item} toggleMode={toggleMode} />
+            )}
+          </Col>
+          <Col>
+            {mode === 'view' ? (
+              <Space>
+                <EditOutlined
+                  style={{ cursor: 'pointer' }}
+                  onClick={toggleMode}
+                />
+                <DeleteOutlined
+                  style={{ cursor: 'pointer', color: 'red' }}
+                  onClick={() => dispatch(deleteTask(item._id))}
+                />
+              </Space>
+            ) : (
+              ''
+            )}
+          </Col>
+        </Row>
       </Card>
     </>
   )

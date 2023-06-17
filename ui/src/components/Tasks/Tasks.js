@@ -34,12 +34,6 @@ const NormalView = () => {
 
   return (
     <>
-      {open ? (
-        <Update isnew='true' toggleMode={toggleOpen} />
-      ) : (
-        <Button onClick={toggleOpen}>Create New Task</Button>
-      )}
-
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId='task-list'>
           {(provided) => (
