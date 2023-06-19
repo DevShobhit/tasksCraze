@@ -1,5 +1,6 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleOpen } from '../../features/settingslice'
 import {
   Layout,
   Menu,
@@ -23,10 +24,23 @@ const { Header } = Layout
 
 function Navbar({ theme, toggleTheme }) {
   const user = useSelector((state) => state.user.user)
+  const dispatch = useDispatch()
+
+  const toggleModalStatus = () => {
+    dispatch(toggleOpen())
+  }
 
   const overlayMenu = [
-    { icon: <SettingOutlined />, title: 'Settings' },
-    { icon: <LogoutOutlined />, title: 'Logout', link: '/api/auth/logout' },
+    {
+      icon: <SettingOutlined />,
+      title: 'Settings',
+      onclick: toggleModalStatus,
+    },
+    {
+      icon: <LogoutOutlined />,
+      title: 'Logout',
+      link: '/api/auth/logout',
+    },
     {
       icon: <BulbOutlined />,
       title: 'Change Theme',
@@ -38,7 +52,12 @@ function Navbar({ theme, toggleTheme }) {
     <Menu>
       {overlayMenu.map((item, index) => (
         <Menu.Item key={index}>
-          <Button block icon={item.icon} href={item?.link}>
+          <Button
+            block
+            icon={item.icon}
+            onClick={item.onclick}
+            href={item?.link}
+          >
             {item.title}
             {item?.extra}{' '}
           </Button>

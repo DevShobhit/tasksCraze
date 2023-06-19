@@ -4,6 +4,7 @@ import { ConfigProvider } from 'antd'
 import { useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import TasksPage from '../tasks/tasks'
+import Settings from '../../components/Settings/settings'
 
 const { Content } = Layout
 
@@ -44,6 +45,7 @@ function Dashboard() {
         <Layout style={{ marginLeft: collapsed ? 80 : 200, marginTop: 60 }}>
           <Content style={{ margin: '16px' }}>
             <TasksPage />
+            <Settings />
           </Content>
         </Layout>
       </Layout>
