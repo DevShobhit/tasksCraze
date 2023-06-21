@@ -7,7 +7,7 @@ import SideImg from '../utilities/images/side.jpg'
 import { Layout, Space, Divider, Row, Col } from 'antd'
 import './landing.css'
 import Navbar from '../components/Navbar/Navbar'
-import Tasks from '../components/Tasks/Tasks'
+import Dashboard from './dashboard/dashboard'
 const { Content } = Layout
 
 const Landing = () => {
@@ -20,20 +20,20 @@ const Landing = () => {
 
   return (
     <>
-      <Layout
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, #ffecd2 0%, #fcb69f 100%)',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          minHeight: '100vh',
-        }}
-      >
-        <Navbar />
-        <Content style={{ background: 'transparent' }}>
-          {user?.user?.name ? (
-            <Tasks />
-          ) : (
+      {user?.user?.name ? (
+        <Dashboard />
+      ) : (
+        <Layout
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, #ffecd2 0%, #fcb69f 100%)',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            minHeight: '100vh',
+          }}
+        >
+          <Navbar />
+          <Content style={{ background: 'transparent' }}>
             <Row justify={'space-around'} align={'middle'}>
               <Col>
                 <Space direction='vertical'>
@@ -84,9 +84,9 @@ const Landing = () => {
                 />
               </Col>
             </Row>
-          )}
-        </Content>
-      </Layout>
+          </Content>
+        </Layout>
+      )}
     </>
   )
 }
