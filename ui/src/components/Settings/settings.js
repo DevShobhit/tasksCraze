@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Modal } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleOpen } from '../../features/settingslice'
+import { updatePomoSettings } from '../../features/pomoslice'
 import { Button, Space, Menu, Layout } from 'antd'
 import { ClockCircleOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import PomoSettings from './pomoSettings'
@@ -17,10 +18,33 @@ const sidebarLinks = [
 const Settings = () => {
   const dispatch = useDispatch()
   const isModalOpen = useSelector((state) => state.settings.isOpen)
+
+  // Pomodoro Settings
+  const pomoDur = useSelector((state) => state.pomo.pomoDur)
+  const shortBreakDur = useSelector((state) => state.pomo.shortBreakDur)
+  const longBreakDur = useSelector((state) => state.pomo.longBreakDur)
+  const longBreakAfter = useSelector((state) => state.pomo.longBreakAfter)
+  const autoStartBreak = useSelector((state) => state.pomo.autoStartBreak)
+  const autoStartNextPomo = useSelector((state) => state.pomo.autoStartNextPomo)
+
   const [selectedKey, setSelectedKey] = useState('0')
 
-  const toggleModalStatus = () => {
+  const [pomoSettings, setPomoSettings] = useState({
+    pomoDur,
+    shortBreakDur,
+    longBreakDur,
+    longBreakAfter,
+    autoStartBreak,
+    autoStartNextPomo,
+  })
+
+  function handlePomoSettingsChange(setting) {
+    setPomoSettings({ ...pomoSettings, ...setting })
+  }
+
+  const toggleModalStatusAndSaveChanges = () => {
     dispatch(toggleOpen())
+    dispatch(updatePomoSettings(pomoSettings))
   }
 
   const changeSelectedKey = (currentKey) => {
@@ -43,7 +67,7 @@ const Settings = () => {
         style={{
           top: '30px',
         }}
-        onCancel={() => toggleModalStatus()}
+        onCancel={() => toggleModalStatusAndSaveChanges()}
         footer={null}
         width={'50vw'}
       >
@@ -64,7 +88,14 @@ const Settings = () => {
               padding: '30px',
             }}
           >
-            {selectedKey == 0 ? <PomoSettings /> : <About />}
+            {selectedKey == 0 ? (
+              <PomoSettings
+                pomoSettings={pomoSettings}
+                handlePomoSettingsChange={handlePomoSettingsChange}
+              />
+            ) : (
+              <About />
+            )}
           </Content>
         </Layout>
       </Modal>

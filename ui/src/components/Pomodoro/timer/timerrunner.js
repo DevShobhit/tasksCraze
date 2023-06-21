@@ -30,7 +30,6 @@ const TimerRunner = () => {
           }}
         >
           <TaskTimer
-            duration={1}
             running={activeTask !== null}
             id={currentTask._id}
             completedPomo={currentTask.completedPomo}

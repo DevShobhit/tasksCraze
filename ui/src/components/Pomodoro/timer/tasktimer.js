@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateTask, clearActive } from '../../../features/taskslice'
 import {
@@ -32,7 +32,10 @@ function TimerDisplay({ remaining, totaldur = 60 }) {
 }
 
 function TaskTimer({ running, id, completedPomo }) {
-  const remaining = useSelector((state) => state.pomo.timeRemaining)
+  const duration = useSelector((state) => state.pomo.pomoDur * 60)
+  const remaining = useSelector((state) =>
+    parseInt(state.pomo.timeRemaining * 60)
+  )
   const isrunning = useSelector((state) => state.pomo.isRunning)
   const breakStatus = useSelector((state) => state.pomo.breakStatus)
   // const [timer, setTimer] = useState(null)
@@ -50,7 +53,7 @@ function TaskTimer({ running, id, completedPomo }) {
     if (isrunning) {
       intervalId = setInterval(() => {
         if (remaining > 0) {
-          dispatch(updateTimeRemaining(remaining - 1))
+          dispatch(updateTimeRemaining((remaining - 1) / 60))
         } else {
           clearInterval(intervalId)
           dispatch(pauseTimer())
@@ -91,7 +94,7 @@ function TaskTimer({ running, id, completedPomo }) {
   return (
     <>
       <Space direction='vertical' size={40} align='center'>
-        <TimerDisplay remaining={remaining} />
+        <TimerDisplay remaining={remaining} totalDur={duration} />
 
         {isrunning ? (
           <Button onClick={() => pauseTask()}> Pause</Button>
