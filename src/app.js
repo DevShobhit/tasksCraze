@@ -3,6 +3,7 @@ const TaskRoute = require('./routers/tasks')
 const UserRoute = require('./routers/user')
 const session = require('express-session')
 const passport = require('passport')
+const path = require('path')
 
 require('./config/mongoose')
 require('./middlewares/passport')

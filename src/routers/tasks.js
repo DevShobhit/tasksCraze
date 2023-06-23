@@ -19,4 +19,8 @@ router.delete('/api/tasks/:id', auth, (req, res) => {
   taskController.deleteTask(req, res)
 })
 
+router.post('/api/tasks/reorder', auth, (req, res) => {
+  taskController.reorderTasks(req, res)
+})
+
 module.exports = router

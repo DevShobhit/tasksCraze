@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from 'antd'
 import Task from './templates/task'
-import Update from './templates/update'
-import { fetchTasks, updateOrder } from '../../features/taskslice'
+import { fetchTasks, reorderTasks } from '../../features/taskslice'
 import TimerRunner from '../Pomodoro/timer/timerrunner'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { List, Card } from 'antd'
 
 const NormalView = () => {
   const [open, setOpen] = useState(false)
@@ -21,7 +18,7 @@ const NormalView = () => {
     const reorderedTasks = Array.from(tasks)
     const [draggedTask] = reorderedTasks.splice(source.index, 1)
     reorderedTasks.splice(destination.index, 0, draggedTask)
-    dispatch(updateOrder(reorderedTasks))
+    dispatch(reorderTasks(reorderedTasks))
   }
 
   const toggleOpen = () => {
