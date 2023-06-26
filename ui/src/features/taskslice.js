@@ -31,6 +31,14 @@ export const createTask = createAsyncThunk('user/createTask', async (task) => {
   return response.data
 })
 
+export const reorderTasks = createAsyncThunk(
+  'user/reorderTasks',
+  async (tasks) => {
+    const response = await axios.post('/api/tasks/reorder', tasks)
+    return response.data
+  }
+)
+
 export const taskSlice = createSlice({
   name: 'Task',
   initialState,
@@ -41,9 +49,6 @@ export const taskSlice = createSlice({
     clearActive: (state) => {
       state.activeTask = null
     },
-    udpateOrder: (state, action) => {
-      state.items = action.payload
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,7 +57,7 @@ export const taskSlice = createSlice({
         state.error = null
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
-        state.items = action.payload.tasks
+        state.items = action.payload.tasks.sort((a, b) => a.order - b.order)
         state.loading = false
       })
       .addCase(fetchTasks.rejected, (state, action) => {
@@ -66,7 +71,7 @@ export const taskSlice = createSlice({
       })
       .addCase(updateTask.fulfilled, (state, action) => {
         const task = state.items.findIndex(
-          (task) => task._id == action.payload._id
+          (task) => task._id === action.payload._id
         )
         state.items[task] = action.payload
         state.updating = false
@@ -89,6 +94,19 @@ export const taskSlice = createSlice({
         state.error = action.error.message
       })
 
+      .addCase(reorderTasks.pending, (state) => {
+        state.updating = true
+        state.error = null
+      })
+      .addCase(reorderTasks.fulfilled, (state, action) => {
+        state.updating = false
+        state.items = action.payload.sort((a, b) => a.order - b.order)
+      })
+      .addCase(reorderTasks.rejected, (state, action) => {
+        state.updating = false
+        state.error = action.error.message
+      })
+
       .addCase(deleteTask.pending, (state) => {
         state.updating = true
         state.error = null
@@ -106,6 +124,6 @@ export const taskSlice = createSlice({
   },
 })
 
-export const { setActive, updateOrder, clearActive } = taskSlice.actions
+export const { setActive, clearActive } = taskSlice.actions
 
 export default taskSlice.reducer

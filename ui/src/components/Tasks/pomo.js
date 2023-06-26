@@ -10,7 +10,7 @@ const renderpomo = (active, completed, total) => {
               <AlarmIcon style={{ color: 'teal' }} />
             </span>
           )
-        } else if (idx == completed && active) {
+        } else if (idx === completed && active) {
           return (
             <span key={idx}>
               <StopWatchIcon style={{ color: '#ff9529' }} />

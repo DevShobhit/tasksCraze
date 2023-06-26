@@ -45,7 +45,7 @@ function Sidebar({ theme, collapsed, toggleSidebar }) {
         top: 64,
         bottom: 0,
         paddingTop: '20px',
-        backgroundColor: theme == 'dark' ? dark.Background : light.Background,
+        backgroundColor: theme === 'dark' ? dark.Background : light.Background,
       }}
     >
       <Menu
@@ -53,7 +53,8 @@ function Sidebar({ theme, collapsed, toggleSidebar }) {
         mode='inline'
         defaultSelectedKeys={['0']}
         style={{
-          backgroundColor: theme == 'dark' ? dark.Background : light.Background,
+          backgroundColor:
+            theme === 'dark' ? dark.Background : light.Background,
         }}
       >
         {renderSidebarLinks()}

@@ -9,7 +9,8 @@ const initialState = {
   autoStartBreak: false,
   autoStartNextPomo: false,
   isRunning: false,
-  breakStatus: 'inactive', // inactive || shortbreak || longBreak
+  pomoStatus: 'active', // active || shortBreak || longBreak
+  breakCounts: 0,
 }
 
 const pomoSlice = createSlice({
@@ -32,24 +33,33 @@ const pomoSlice = createSlice({
     pauseTimer: (state) => {
       state.isRunning = false
     },
-    resetTimer: (state) => {
-      state.isRunning = false
-      state.timeRemaining = state.pomoDur
+    resetTimer: (state, action) => {
+      state.timeRemaining =
+        action.payload === 'active'
+          ? state.pomoDur
+          : action.payload === 'shortBreak'
+          ? state.shortBreakDur
+          : state.longBreakDur
     },
     updateTimeRemaining: (state, action) => {
       state.timeRemaining = action.payload
     },
-    updateBreakStatus: (state, action) => {
-      state.breakStatus = action.payload
 
-      // Changing the timer according to break status of the application
-      if (state.breakStatus === 'active') {
-        state.pomoDur = 1
-        state.timeRemaining = 1
-      } else {
-        state.pomoDur = 25
-        state.timeRemaining = 25
-      }
+    resetPomoStatus: (state) => {
+      state.pomoStatus = 'active'
+      state.breakCounts = 0
+    },
+
+    updatePomoStatus: (state, action) => {
+      state.pomoStatus = action.payload
+    },
+
+    increaseBreakCounts: (state) => {
+      state.breakCounts += 1
+    },
+
+    resetBreakCounts: (state) => {
+      state.breakCounts = 0
     },
   },
 })
@@ -60,7 +70,10 @@ export const {
   pauseTimer,
   resetTimer,
   updateTimeRemaining,
-  updateBreakStatus,
+  updatePomoStatus,
+  increaseBreakCounts,
+  resetBreakCounts,
+  resetPomoStatus,
 } = pomoSlice.actions
 
 export default pomoSlice.reducer

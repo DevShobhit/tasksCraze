@@ -1,16 +1,13 @@
-import { useState } from 'react'
 import renderpomo from '../pomo'
-import TaskTimer from '../../Pomodoro/timer/tasktimer'
 import { useSelector, useDispatch } from 'react-redux'
 import { setActive, clearActive, updateTask } from '../../../features/taskslice'
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
   CheckCircleOutlined,
-  BorderOutlined,
 } from '@ant-design/icons'
 import { CircleIcon } from '../../../utilities/customIcons'
-import { Space, Checkbox, Row, Col } from 'antd'
+import { Space, Row, Col } from 'antd'
 
 const View = ({ item }) => {
   const activeTask = useSelector((state) => state.tasks.activeTask)

@@ -6,7 +6,10 @@ import {
   pauseTimer,
   resetTimer,
   updateTimeRemaining,
-  updateBreakStatus,
+  updatePomoStatus,
+  resetPomoStatus,
+  increaseBreakCounts,
+  resetBreakCounts,
 } from '../../../features/pomoslice'
 import { Progress, Button, Space } from 'antd'
 
@@ -31,80 +34,130 @@ function TimerDisplay({ remaining, totaldur = 60 }) {
   )
 }
 
-function TaskTimer({ running, id, completedPomo }) {
-  const duration = useSelector((state) => state.pomo.pomoDur * 60)
+function TaskTimer({ isTaskActive, id, completedPomo, totalPomo }) {
+  const duration = useSelector((state) =>
+    state.pomo.pomoStatus === 'active'
+      ? state.pomo.pomoDur * 60
+      : state.pomo.pomoStatus === 'shortBreak'
+      ? state.pomo.shortBreakDur * 60
+      : state.pomo.longBreakDur * 60
+  )
   const remaining = useSelector((state) =>
     parseInt(state.pomo.timeRemaining * 60)
   )
-  const isrunning = useSelector((state) => state.pomo.isRunning)
-  const breakStatus = useSelector((state) => state.pomo.breakStatus)
+  const isPomoActive = useSelector((state) => state.pomo.isRunning)
+  const autobreak = useSelector((state) => state.pomo.autoStartBreak)
+  const autoStartNextPomo = useSelector((state) => state.pomo.autoStartNextPomo)
+  const pomoStatus = useSelector((state) => state.pomo.pomoStatus)
+  const breaksConsumed = useSelector((state) => state.pomo.breakCounts)
+  const longBreakAfter = useSelector((state) => state.pomo.longBreakAfter)
   // const [timer, setTimer] = useState(null)
   const dispatch = useDispatch()
 
   const startTask = () => {
-    if (!isrunning) {
+    if (!isPomoActive) {
       dispatch(startTimer())
     }
   }
-
-  useEffect(() => {
-    let intervalId
-
-    if (isrunning) {
-      intervalId = setInterval(() => {
-        if (remaining > 0) {
-          dispatch(updateTimeRemaining((remaining - 1) / 60))
-        } else {
-          clearInterval(intervalId)
-          dispatch(pauseTimer())
-        }
-      }, 1000)
-    }
-
-    return () => clearInterval(intervalId)
-  }, [dispatch, remaining, isrunning])
 
   const pauseTask = () => {
     dispatch(pauseTimer())
   }
 
   useEffect(() => {
-    if (running) startTask()
-    if (!running) pauseTask()
-  }, [running])
+    let intervalId
+
+    if (isPomoActive) {
+      intervalId = setInterval(() => {
+        if (remaining > 0) {
+          dispatch(updateTimeRemaining((remaining - 1) / 60))
+        } else {
+          clearInterval(intervalId)
+          pomoStatus === 'active' &&
+            dispatch(updateTask({ _id: id, completedPomo: completedPomo + 1 }))
+
+          !autobreak && dispatch(clearActive())
+          completedPomo === totalPomo && dispatch(clearActive())
+
+          if (!autoStartNextPomo && pomoStatus !== 'active') {
+            dispatch(clearActive())
+            dispatch(resetTimer('active'))
+            dispatch(resetPomoStatus('active'))
+          }
+
+          // dispatch(pauseTimer())
+
+          if (autobreak === true && pomoStatus !== 'active') {
+            dispatch(increaseBreakCounts())
+            if (breaksConsumed === longBreakAfter) {
+              dispatch(resetBreakCounts())
+            }
+          }
+
+          autobreak
+            ? dispatch(
+                resetTimer(
+                  pomoStatus !== 'active'
+                    ? 'active'
+                    : breaksConsumed < longBreakAfter
+                    ? 'shortBreak'
+                    : 'longBreak'
+                )
+              )
+            : resetTimer('active')
+
+          autobreak &&
+            dispatch(
+              pomoStatus !== 'active'
+                ? updatePomoStatus('active')
+                : breaksConsumed < longBreakAfter
+                ? updatePomoStatus('shortBreak')
+                : updatePomoStatus('longBreak')
+            )
+        }
+      }, 1000)
+    }
+
+    return () => clearInterval(intervalId)
+  }, [
+    dispatch,
+    remaining,
+    isPomoActive,
+    completedPomo,
+    id,
+    longBreakAfter,
+    pomoStatus,
+    totalPomo,
+    autoStartNextPomo,
+    autobreak,
+    breaksConsumed,
+  ])
 
   useEffect(() => {
-    if (remaining <= 0) {
-      dispatch(resetTimer())
-      pauseTask()
-      dispatch(clearActive())
-      breakStatus === 'inactive' &&
-        dispatch(updateTask({ _id: id, completedPomo: completedPomo + 1 }))
-      breakStatus === 'active'
-        ? dispatch(updateBreakStatus('inactive'))
-        : dispatch(updateBreakStatus('active'))
+    if (isTaskActive) dispatch(startTimer())
+    if (!isTaskActive) dispatch(pauseTimer())
+  }, [isTaskActive, dispatch])
 
-      // TODO: Handle Notification
-      // const notification = new Notification('Focus Pomodoro', {
-      //   body: 'Good Work on completing Pomodoro. Keep Going!',
-      // })
-    }
-  }, [remaining])
+  // TODO: Handle Notification
+  // const notification = new Notification('Focus Pomodoro', {
+  //   body: 'Good Work on completing Pomodoro. Keep Going!',
+  // })
 
   return (
     <>
       <Space direction='vertical' size={40} align='center'>
         <TimerDisplay remaining={remaining} totalDur={duration} />
 
-        {isrunning ? (
+        {isPomoActive ? (
           <Button onClick={() => pauseTask()}> Pause</Button>
         ) : (
           <Space>
             <Button onClick={() => startTask()}> Continue</Button>
             <Button
               onClick={() => {
-                dispatch(resetTimer())
+                dispatch(resetTimer('active'))
                 dispatch(clearActive())
+                dispatch(resetPomoStatus())
               }}
             >
               {' '}

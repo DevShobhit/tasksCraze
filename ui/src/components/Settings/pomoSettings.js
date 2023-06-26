@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Space, Switch, Form, InputNumber } from 'antd'
 
 function PomoSettings({ pomoSettings, handlePomoSettingsChange }) {

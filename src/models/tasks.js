@@ -34,6 +34,11 @@ const taskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  order: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

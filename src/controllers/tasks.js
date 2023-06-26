@@ -4,7 +4,7 @@ const getAll = async (req, res) => {
   const userid = req.user._id
 
   try {
-    const tasks = await Tasks.find({ owner: userid }).sort({ createdAt: -1 })
+    const tasks = await Tasks.find({ owner: userid })
     res.status(200).json({
       tasks: tasks,
     })
@@ -54,6 +54,7 @@ const createTask = async (req, res) => {
   const task = new Tasks({
     ...req.body,
     owner: req.user._id,
+    order: 0,
     ref: 'User',
   })
 
@@ -81,4 +82,21 @@ const deleteTask = async (req, res) => {
   }
 }
 
-module.exports = { getAll, updateTask, createTask, deleteTask }
+const reorderTasks = async (req, res) => {
+  try {
+    const tasks = await Tasks.find({ owner: req.user._id })
+    const reorderedTasks = req.body
+
+    const updates = {}
+
+    reorderedTasks.forEach((task, index) => (updates[task['_id']] = index))
+    tasks.forEach((task) => (task.order = updates[task['_id']]))
+    tasks.forEach(async (task) => task.save())
+
+    res.send(tasks)
+  } catch (e) {
+    res.status(400).send()
+  }
+}
+
+module.exports = { getAll, updateTask, createTask, deleteTask, reorderTasks }
