@@ -65,7 +65,7 @@ const Landing = () => {
               <img
                 src={SideImg}
                 style={{ width: '400px', height: 'auto' }}
-                alt='Sand Timer Image'
+                alt='Sand Timer'
               />
             </Col>
           </Row>

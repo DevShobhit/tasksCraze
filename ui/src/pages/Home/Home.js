@@ -11,7 +11,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchUser())
-  }, [])
+  }, [dispatch])
 
   return <>{user?.user?.name ? <Dashboard /> : <Landing />}</>
 }

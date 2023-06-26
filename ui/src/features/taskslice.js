@@ -71,7 +71,7 @@ export const taskSlice = createSlice({
       })
       .addCase(updateTask.fulfilled, (state, action) => {
         const task = state.items.findIndex(
-          (task) => task._id == action.payload._id
+          (task) => task._id === action.payload._id
         )
         state.items[task] = action.payload
         state.updating = false

@@ -3,7 +3,7 @@ import { Modal } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleOpen } from '../../features/settingslice'
 import { updatePomoSettings } from '../../features/pomoslice'
-import { Button, Space, Menu, Layout } from 'antd'
+import { Menu, Layout } from 'antd'
 import { ClockCircleOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import PomoSettings from './pomoSettings'
 import About from './about'
@@ -88,7 +88,7 @@ const Settings = () => {
               padding: '30px',
             }}
           >
-            {selectedKey == 0 ? (
+            {selectedKey === 0 ? (
               <PomoSettings
                 pomoSettings={pomoSettings}
                 handlePomoSettingsChange={handlePomoSettingsChange}

@@ -119,12 +119,24 @@ function TaskTimer({ isTaskActive, id, completedPomo, totalPomo }) {
     }
 
     return () => clearInterval(intervalId)
-  }, [dispatch, remaining, isPomoActive])
+  }, [
+    dispatch,
+    remaining,
+    isPomoActive,
+    completedPomo,
+    id,
+    longBreakAfter,
+    pomoStatus,
+    totalPomo,
+    autoStartNextPomo,
+    autobreak,
+    breaksConsumed,
+  ])
 
   useEffect(() => {
-    if (isTaskActive) startTask()
-    if (!isTaskActive) pauseTask()
-  }, [isTaskActive])
+    if (isTaskActive) dispatch(startTimer())
+    if (!isTaskActive) dispatch(pauseTimer())
+  }, [isTaskActive, dispatch])
 
   // TODO: Handle Notification
   // const notification = new Notification('Focus Pomodoro', {

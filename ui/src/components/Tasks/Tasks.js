@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Task from './templates/task'
 import { fetchTasks, reorderTasks } from '../../features/taskslice'
@@ -6,7 +6,7 @@ import TimerRunner from '../Pomodoro/timer/timerrunner'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 const NormalView = () => {
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
   const tasks = useSelector((state) => state.tasks.items)
   const dispatch = useDispatch()
 
@@ -21,13 +21,13 @@ const NormalView = () => {
     dispatch(reorderTasks(reorderedTasks))
   }
 
-  const toggleOpen = () => {
-    setOpen(!open)
-  }
+  // const toggleOpen = () => {
+  //   setOpen(!open)
+  // }
 
   useEffect(() => {
     dispatch(fetchTasks())
-  }, [])
+  }, [dispatch])
 
   return (
     <>

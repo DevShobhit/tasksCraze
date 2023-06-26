@@ -70,7 +70,7 @@ function Navbar({ theme, toggleTheme }) {
     <>
       <Header
         style={{
-          background: theme == 'dark' ? dark.Background : light.Background,
+          background: theme === 'dark' ? dark.Background : light.Background,
           position: 'fixed',
           top: 0,
           zIndex: 1,
@@ -88,7 +88,7 @@ function Navbar({ theme, toggleTheme }) {
               <span style={{ fontSize: '25px' }}>⚡</span>
               <span style={{ fontSize: '18px' }}>
                 <span
-                  style={{ color: theme == 'dark' ? dark.Text : light.Text }}
+                  style={{ color: theme === 'dark' ? dark.Text : light.Text }}
                 >
                   <b>T</b>asks
                 </span>
