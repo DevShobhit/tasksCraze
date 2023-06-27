@@ -1,13 +1,16 @@
 import { useState } from 'react'
-import { Card, Row, Col, Space } from 'antd'
+import { Card, Row, Space } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import View from './view'
 import Update from './update'
-import { useDispatch } from 'react-redux'
+import renderpomo from '../pomo'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteTask } from '../../../features/taskslice'
 
 const Task = ({ item }) => {
   const [mode, setMode] = useState('view')
+  const activeTask = useSelector((state) => state.tasks.activeTask)
+  const active = item._id === activeTask
   const dispatch = useDispatch()
 
   const toggleMode = () => {
@@ -22,15 +25,15 @@ const Task = ({ item }) => {
         }}
       >
         <Row align='center' justify={'space-between'}>
-          <Col>
-            {mode === 'view' ? (
-              <View item={item} />
-            ) : (
-              <Update item={item} toggleMode={toggleMode} />
-            )}
-          </Col>
-          <Col>
-            {mode === 'view' ? (
+          {mode === 'view' ? (
+            <View item={item} />
+          ) : (
+            <Update item={item} toggleMode={toggleMode} />
+          )}
+
+          {mode === 'view' ? (
+            <Space size={'large'}>
+              {renderpomo(active, item.completedPomo, item.pomo)}
               <Space>
                 <EditOutlined
                   style={{ cursor: 'pointer' }}
@@ -41,10 +44,10 @@ const Task = ({ item }) => {
                   onClick={() => dispatch(deleteTask(item._id))}
                 />
               </Space>
-            ) : (
-              ''
-            )}
-          </Col>
+            </Space>
+          ) : (
+            ''
+          )}
         </Row>
       </Card>
     </>

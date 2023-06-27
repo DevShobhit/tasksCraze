@@ -3,8 +3,9 @@ import Sidebar from '../../components/Sidebar/Sidebar'
 import { ConfigProvider } from 'antd'
 import { useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
-import TasksPage from '../tasks/tasks'
+// import TasksPage from '../tasks/tasks'
 import Settings from '../../components/Settings/settings'
+import { Outlet } from 'react-router-dom'
 
 const { Content } = Layout
 
@@ -44,7 +45,7 @@ function Dashboard() {
         />
         <Layout style={{ marginLeft: collapsed ? 80 : 200, marginTop: 60 }}>
           <Content style={{ margin: '16px' }}>
-            <TasksPage />
+            <Outlet />
             <Settings />
           </Content>
         </Layout>

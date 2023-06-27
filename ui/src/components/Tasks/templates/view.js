@@ -1,13 +1,14 @@
-import renderpomo from '../pomo'
+// import renderpomo from '../pomo'
 import { useSelector, useDispatch } from 'react-redux'
 import { setActive, clearActive, updateTask } from '../../../features/taskslice'
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
   CheckCircleOutlined,
+  FlagOutlined,
 } from '@ant-design/icons'
 import { CircleIcon } from '../../../utilities/customIcons'
-import { Space, Row, Col } from 'antd'
+import { Space } from 'antd'
 
 const View = ({ item }) => {
   const activeTask = useSelector((state) => state.tasks.activeTask)
@@ -24,9 +25,21 @@ const View = ({ item }) => {
 
   return (
     <>
-      <Row align='center' justify={'space-between'} gutter={30}>
-        <Space>
-          {/* Toggle Button to mark a task complete or incomplete */}
+      <Space align='center' size={'large'}>
+        {
+          <FlagOutlined
+            style={{
+              color:
+                item.priority === 1
+                  ? 'red'
+                  : item.priority === 2
+                  ? 'orange'
+                  : 'green',
+            }}
+          />
+        }
+        {/* Toggle Button to mark a task complete or incomplete */}
+        <Space size={'small'}>
           {item.completed ? (
             <CheckCircleOutlined
               style={{ fontSize: '20px', cursor: 'pointer' }}
@@ -56,18 +69,8 @@ const View = ({ item }) => {
             />
           )}
         </Space>
-
-        <Col>
-          <Row gutter={5}>
-            <Col>
-              <div>{item.title}</div>
-            </Col>
-            <Col>
-              <div> {renderpomo(active, item.completedPomo, item.pomo)} </div>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+        <div>{item.title}</div>
+      </Space>
     </>
   )
 }

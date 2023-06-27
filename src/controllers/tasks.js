@@ -18,10 +18,10 @@ const updateTask = async (req, res) => {
   const allowedUpdates = [
     'title',
     'description',
-    'completedPomo',
     'pomo',
     'completed',
     'priority',
+    'dueDate',
   ]
   const isValidUpdate = updates.every((update) =>
     allowedUpdates.includes(update)
