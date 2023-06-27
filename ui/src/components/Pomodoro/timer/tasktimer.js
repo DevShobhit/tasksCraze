@@ -13,7 +13,7 @@ import {
 } from '../../../features/pomoslice'
 import { Progress, Button, Space } from 'antd'
 
-function TimerDisplay({ remaining, totaldur = 60 }) {
+function TimerDisplay({ remaining, totalDur = 60 }) {
   const minutes = parseInt(remaining / 60)
   const seconds = remaining % 60
   const display =
@@ -24,10 +24,10 @@ function TimerDisplay({ remaining, totaldur = 60 }) {
     <>
       <Progress
         type='circle'
-        percent={(remaining / totaldur) * 100}
+        percent={(remaining / totalDur) * 100}
         format={() => display}
         size={450}
-        strokeColor={(remaining / totaldur) * 100 < 20 ? 'red' : 'green'}
+        strokeColor={(remaining / totalDur) * 100 < 20 ? 'red' : 'green'}
         trailColor={'#ccc'}
       />
     </>

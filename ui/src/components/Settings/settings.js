@@ -88,7 +88,7 @@ const Settings = () => {
               padding: '30px',
             }}
           >
-            {selectedKey === 0 ? (
+            {selectedKey === '0' ? (
               <PomoSettings
                 pomoSettings={pomoSettings}
                 handlePomoSettingsChange={handlePomoSettingsChange}

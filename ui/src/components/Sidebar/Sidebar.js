@@ -7,6 +7,7 @@ import {
   HistoryOutlined,
   InboxOutlined,
 } from '@ant-design/icons'
+import { NavLink, useLocation } from 'react-router-dom'
 
 const sidebarLinks = [
   { title: 'Today', path: '/today', icon: <InboxOutlined /> },
@@ -19,17 +20,17 @@ const sidebarLinks = [
 const { Sider } = Layout
 
 function Sidebar({ theme, collapsed, toggleSidebar }) {
+  let location = useLocation()
   const renderSidebarLinks = () => {
-    return sidebarLinks.map((link, index) => (
-      <Menu.Item key={index} icon={link?.icon}>
-        {link.title}
+    return sidebarLinks.map((link) => (
+      <Menu.Item key={link.path} icon={link?.icon}>
+        <NavLink to={link.path}>{link.title}</NavLink>
       </Menu.Item>
     ))
   }
 
   return (
     // Change the way sider is themed with better solution and store theme in db
-
     <Sider
       collapsible
       collapsed={collapsed}
@@ -51,7 +52,8 @@ function Sidebar({ theme, collapsed, toggleSidebar }) {
       <Menu
         theme={theme}
         mode='inline'
-        defaultSelectedKeys={['0']}
+        defaultSelectedKeys={['/']}
+        selectedKeys={[location.pathname]}
         style={{
           backgroundColor:
             theme === 'dark' ? dark.Background : light.Background,
