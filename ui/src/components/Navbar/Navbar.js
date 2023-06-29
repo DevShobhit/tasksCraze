@@ -100,17 +100,16 @@ function Navbar({ theme, toggleTheme }) {
           </Col>
 
           <Col>
-            {user?.name ? 'HI' : ''}
             {user?.user?.name ? (
               <Space>
-                <Space>{user?.user?.name}</Space>
                 <Dropdown overlay={menu} trigger={['click']}>
-                  <Button
-                    type='text'
-                    shape='circle'
-                    icon={<Avatar icon={<UserOutlined />} />}
+                  <Avatar
+                    gap={20}
+                    src={user?.user?.profilePicture}
+                    icon={<UserOutlined />}
                   />
                 </Dropdown>
+                <Space>HI {user?.user?.name}</Space>
               </Space>
             ) : (
               <Button href='/api/auth/google'>Signin With Google</Button>

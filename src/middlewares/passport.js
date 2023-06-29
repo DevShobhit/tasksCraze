@@ -32,15 +32,15 @@ passport.use(
           done(null, user)
         } else {
           const newUser = await User.create({
-            name: profile.displayName,
+            name: profile.name.givenName,
             email: profile.emails[0].value,
             googleId: profile.id,
+            profilePicture: profile.photos[0].value,
           })
-          console.log(newUser)
           done(null, newUser)
         }
       } catch (error) {
-        console.log(e)
+        console.log(error)
         done(error, null)
       }
     }

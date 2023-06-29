@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
   },
+  profilePicture: {
+    type: String,
+  },
   tasks: [
     {
       type: mongoose.Schema.Types.ObjectId,

@@ -40,10 +40,13 @@ router.post('/api/auth/signup', (req, res) => {
 })
 
 router.get('/api/auth/logout', auth, (req, res) => {
-  req.session.destroy(function () {
-    res.clearCookie('connect.sid')
-    res.redirect('/')
-  })
+  req.logOut()
+  res.redirect('/')
+  // req.session.destroy(function () {
+  //   res.clearCookie('connect.sid')
+  //   res.redirect('https://accounts.google.com/Logout')
+  //   res.redirect('/')
+  // })
   // req.logout(function (err) {
   //   if (err) {
   //     return next(err)

@@ -3,7 +3,9 @@ import Task from '../../components/Tasks/templates/task'
 
 const PlannedTasks = () => {
   const allTasks = useSelector((state) => state.tasks.items)
-  const plannedTasks = allTasks.filter((task) => task.dueDate > new Date())
+  const plannedTasks = allTasks.filter(
+    (task) => new Date(task.dueDate) > new Date()
+  )
 
   return (
     <>

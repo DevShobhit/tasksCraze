@@ -5,7 +5,8 @@ const TodayTasks = () => {
   const allTasks = useSelector((state) => state.tasks.items)
   const today = new Date()
   const todayTasks = allTasks.filter(
-    (task) => task.dueDate?.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0)
+    (task) =>
+      new Date(task.dueDate).setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0)
   )
 
   return (
