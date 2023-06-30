@@ -109,7 +109,11 @@ function Navbar({ theme, toggleTheme }) {
                     icon={<UserOutlined />}
                   />
                 </Dropdown>
-                <Space>HI {user?.user?.name}</Space>
+                <Space
+                  style={{ color: theme === 'dark' ? dark.Text : light.Text }}
+                >
+                  Hi, {user?.user?.name}
+                </Space>
               </Space>
             ) : (
               <Button href='/api/auth/google'>Signin With Google</Button>
