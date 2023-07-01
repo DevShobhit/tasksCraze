@@ -1,8 +1,10 @@
-import { Button } from 'antd'
-import SideImg from '../../utilities/images/side.jpg'
-import { Layout, Space, Row, Col } from 'antd'
-import './landing.css'
+import { Layout } from 'antd'
+
 import Navbar from '../../components/Navbar/Navbar'
+import { Layout1 } from '../../components/Container'
+import { HeroLeft, HeroRight } from './Hero'
+import './landing.css'
+
 const { Content } = Layout
 
 const Landing = () => {
@@ -11,64 +13,17 @@ const Landing = () => {
       <Layout
         style={{
           backgroundImage:
-            'linear-gradient(to right, #ffecd2 0%, #fcb69f 100%)',
+            'radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%)',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           minHeight: '100vh',
         }}
       >
         <Navbar />
-        <Content style={{ background: 'transparent' }}>
-          <Row justify={'space-around'} align={'middle'}>
-            <Col>
-              <Space direction='vertical'>
-                <div style={{ fontSize: '20px', color: '#333' }}>
-                  Be{' '}
-                  <span style={{ fontSize: '80px' }}>
-                    <b>Crazy</b>
-                  </span>{' '}
-                  about your
-                  <span style={{ fontSize: '30px' }}>
-                    <b>Tasks</b>
-                  </span>
-                </div>
-                <div style={{ fontSize: '20px', color: '#333' }}>
-                  Be
-                  <span style={{ fontSize: '30px' }}>
-                    <b>Crazy</b>
-                  </span>{' '}
-                  about your{' '}
-                  <span style={{ fontSize: '60px' }}>
-                    <b>Goals</b>
-                  </span>
-                </div>
-                <div style={{ fontSize: '20px', color: '#333' }}>
-                  Be{' '}
-                  <span style={{ fontSize: '40px' }}>
-                    <b>Crazy</b>
-                  </span>{' '}
-                  about utilising your{' '}
-                  <span style={{ fontSize: '80px' }}>
-                    <b>Time</b>
-                  </span>
-                </div>
-              </Space>
-              <Button
-                size='large'
-                href='/api/auth/google'
-                className='btn-gradient'
-              >
-                Signin With Google
-              </Button>
-            </Col>
-            <Col>
-              <img
-                src={SideImg}
-                style={{ width: '400px', height: 'auto' }}
-                alt='Sand Timer'
-              />
-            </Col>
-          </Row>
+        <Content
+        // style={{ marginTop: '100px' }}
+        >
+          <Layout1 Left={HeroLeft} Right={HeroRight} />
         </Content>
       </Layout>
     </>
